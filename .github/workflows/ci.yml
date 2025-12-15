@@ -53,6 +53,13 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/ansible-key
+          chmod 600 ~/.ssh/ansible-key
+          ssh-keygen -y -f ~/.ssh/ansible-key > ~/.ssh/ansible-key.pub
+
       - name: Terraform Init
         working-directory: terraform
         run: terraform init -backend=false
@@ -136,6 +143,16 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ env.AWS_REGION }}
         run: terraform apply -auto-approve
+
+      - name: Get EC2 Public IP
+        id: get_ip
+        working-directory: terraform
+        run: |
+          PUBLIC_IP=$(terraform output -raw public_ip)
+          echo "public_ip=$PUBLIC_IP" >> $GITHUB_OUTPUT
+          echo "### 🚀 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "**EC2 Public IP:** \`$PUBLIC_IP\`" >> $GITHUB_STEP_SUMMARY
+          echo "**SSH Command:** \`ssh -i ~/.ssh/ansible-key ubuntu@$PUBLIC_IP\`" >> $GITHUB_STEP_SUMMARY
 
       - name: Wait for EC2 to be ready
         run: sleep 30
