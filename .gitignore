@@ -1,0 +1,15 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+*.tfplan
+
+# SSH Keys
+*.pem
+*.key
+id_rsa*
+ansible-key*
+
+# Ansible
+*.retry
