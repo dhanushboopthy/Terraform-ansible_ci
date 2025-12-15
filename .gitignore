@@ -13,3 +13,4 @@ ansible-key*
 
 # Ansible
 *.retry
+ansible/inventory.ini
