@@ -45,7 +45,7 @@ resource "aws_key_pair" "ansible_key" {
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2-sg-${var.environment}"
   description = "Basic SSH access"
-  
+
   ingress {
     from_port   = 22
     to_port     = 22
@@ -75,9 +75,9 @@ resource "aws_instance" "ec2" {
 # Generate dynamic inventory for Ansible
 resource "local_file" "ansible_inventory" {
   content = templatefile("${path.module}/inventory.tpl", {
-    ec2_ip         = aws_instance.ec2.public_ip
-    ssh_user       = "ubuntu"
-    private_key    = var.private_key_path
+    ec2_ip      = aws_instance.ec2.public_ip
+    ssh_user    = "ubuntu"
+    private_key = var.private_key_path
   })
   filename = "${path.module}/../ansible/inventory.ini"
 }

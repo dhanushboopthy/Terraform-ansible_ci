@@ -19,7 +19,7 @@ variable "environment" {
 variable "ssh_cidr" {
   description = "CIDR allowed to SSH to instance"
   type        = string
-  default     = "0.0.0.0/0"  # WARNING: Change this to your IP for security
+  default     = "0.0.0.0/0" # WARNING: Change this to your IP for security
 }
 
 variable "public_key_path" {
