@@ -74,7 +74,7 @@ resource "aws_instance" "ec2" {
 
 # Generate dynamic inventory for Ansible
 resource "local_file" "ansible_inventory" {
-  content = <<-EOT
+  content  = <<-EOT
 [docker_hosts]
 ec2 ansible_host=${aws_instance.ec2.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${var.private_key_path}
 EOT
